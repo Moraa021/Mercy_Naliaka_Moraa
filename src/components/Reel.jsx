@@ -56,7 +56,7 @@ export default function Reel() {
                     >
                       <Play size={24} className="ml-1 text-[var(--color-ink)]" />
                     </motion.span>
-                    <span className="font-mono text-xs text-[var(--color-paper)]">
+                    <span className="font-sans text-xs text-[var(--color-paper)] font-medium">
                       Play presentation reel
                     </span>
                   </span>
@@ -82,7 +82,7 @@ export default function Reel() {
                 />
               </div>
               <div className="p-5 sm:p-6">
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)]">
+                <p className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
                   {reel.companion.eyebrow}
                 </p>
                 <h3 className="mt-2 font-display text-lg sm:text-xl font-medium text-[var(--color-ink)]">
