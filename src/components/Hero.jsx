@@ -1,10 +1,19 @@
-import { Mail, ArrowRight, Play, Sparkles } from "lucide-react";
+import { Mail, ArrowRight, Download, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { profile } from "../data";
 import { GithubIcon, LinkedinIcon, XIcon } from "./BrandIcons";
 import AnimeAvatar from "./AnimeAvatar";
 import { KineticTitle, RotatingKineticBadge } from "./KineticText";
 import { TiltCard } from "./TiltCard";
+
+const TECH_PILLS = [
+  "Go (Goroutines)",
+  "Python (FastAPI / Flask)",
+  "PostgreSQL",
+  "Neo4j GraphRAG",
+  "Docker",
+  "Idempotent APIs",
+];
 
 export default function Hero() {
   const mailtoUrl = profile.email ? `mailto:${profile.email}` : "#";
@@ -26,42 +35,57 @@ export default function Hero() {
         <div>
           {/* Availability & Plata-Style Kinetic Rotating Badge */}
           <div className="mb-6 flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-1.5 font-mono text-[12px] uppercase tracking-wider text-[var(--color-muted)] shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Available for work</span>
+            <div className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-3.5 py-1.5 font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] shadow-2xs">
+              <span>Available for Hire & Remote</span>
             </div>
 
             <RotatingKineticBadge
-              prefix="SYSTEM FOCUS"
+              prefix="BACKEND STACK"
               words={[
                 "Go Concurrency",
+                "Python & FastAPI",
+                "PostgreSQL",
                 "GraphRAG AI",
                 "Idempotent APIs",
                 "Memory Safety",
-                "Zero-Defect QA",
               ]}
             />
           </div>
 
           {/* Plata-Style Kinetic Main Headline */}
-          <div className="font-display text-[12vw] font-bold leading-[0.98] tracking-[-0.03em] sm:text-6xl md:text-7xl lg:text-[80px]">
-            <KineticTitle text="Software engineer," as="span" />
+          <h1 className="font-display text-[11vw] font-bold leading-[0.98] tracking-[-0.03em] sm:text-6xl md:text-7xl lg:text-[76px] text-[var(--color-ink)]">
+            <KineticTitle text="Software engineer &" as="span" />
             <br />
             <span className="font-bold text-[var(--color-ink)]">
-              <KineticTitle text="systems minded." as="span" delay={0.25} />
+              <KineticTitle text="backend developer." as="span" delay={0.2} />
             </span>
-          </div>
+          </h1>
 
-          {/* Full-Body Anime Miniature */}
+          {/* Full-Body Anime Miniature Character */}
           <AnimeAvatar />
 
-          {/* Intro Bio */}
-          <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-[var(--color-muted)]">
+          {/* Intro Bio targeted for prospective employers */}
+          <p className="mt-5 max-w-xl text-[16px] sm:text-[17px] leading-relaxed text-[var(--color-muted)]">
             {profile.bio}
           </p>
 
+          {/* Core Tech Stack Badges Strip */}
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] mr-1">
+              Core:
+            </span>
+            {TECH_PILLS.map((pill) => (
+              <span
+                key={pill}
+                className="rounded-md border border-[var(--color-line)] bg-[var(--color-panel)] px-2.5 py-1 font-sans text-xs font-medium text-[var(--color-ink)] shadow-2xs"
+              >
+                {pill}
+              </span>
+            ))}
+          </div>
+
           {/* Plata-Style Spring Action CTAs */}
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <motion.a
               href="#works"
               whileHover={{ scale: 1.03 }}
@@ -69,33 +93,40 @@ export default function Hero() {
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className="group flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-6 py-3.5 text-sm font-medium text-[var(--color-paper)] shadow-sm"
             >
-              <span>Explore selected works</span>
+              <span>Explore featured systems</span>
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </motion.a>
+
+            {profile.resume && (
+              <motion.a
+                href={profile.resume}
+                download
+                target="_blank"
+                rel="noreferrer"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-3.5 text-sm font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)] shadow-2xs"
+              >
+                <Download size={15} strokeWidth={2} />
+                <span>Resume (PDF)</span>
+              </motion.a>
+            )}
+
             <motion.a
-              href="#impact-slider"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-3.5 text-sm font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)]"
-            >
-              <Sparkles size={14} className="text-[var(--color-ink)]" />
-              <span>Field impact</span>
-            </motion.a>
-            <motion.a
-              href="#reel"
+              href="#contact"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className="flex items-center gap-2 rounded-full border border-[var(--color-line)] px-5 py-3.5 text-sm font-medium transition-colors hover:border-[var(--color-ink)]"
             >
-              <Play size={14} />
-              <span>Watch pitch reel</span>
+              <Sparkles size={14} className="text-amber-600" />
+              <span>Get in touch</span>
             </motion.a>
           </div>
 
           {/* Social Icons Bar */}
-          <div className="mt-10 flex items-center gap-4 text-[var(--color-ink)]/70">
+          <div className="mt-9 flex items-center gap-4 text-[var(--color-ink)]/70">
             {profile.socials?.linkedin && (
               <a
                 href={profile.socials.linkedin}
@@ -150,7 +181,7 @@ export default function Hero() {
               />
             </div>
             <div className="mt-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)] px-4 py-3 shadow-sm">
-              <p className="font-mono text-[11px] uppercase tracking-wide text-[var(--color-muted)]">
+              <p className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
                 Based in
               </p>
               <p className="mt-0.5 text-sm font-medium text-[var(--color-ink)]">
@@ -165,7 +196,7 @@ export default function Hero() {
       {profile.awards && profile.awards.length > 0 && (
         <div className="border-y border-[var(--color-line)] bg-[var(--color-panel)]/80">
           <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center gap-x-6 gap-y-2 px-5 py-3.5 sm:px-8">
-            <span className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-ink)]">
+            <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-ink)]">
               Recognition
             </span>
             <span className="text-[var(--color-line)]">/</span>

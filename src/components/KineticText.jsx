@@ -97,9 +97,9 @@ export function RotatingKineticBadge({
   const currentWord = words[index];
 
   return (
-    <div className={`inline-flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-wider ${className}`}>
+    <div className={`inline-flex flex-wrap items-center gap-2 font-sans text-xs font-semibold uppercase tracking-wider ${className}`}>
       <span className="text-[var(--color-muted)]">{prefix}</span>
-      <span className="relative inline-flex h-6 items-center overflow-hidden rounded-full border border-[var(--color-ink)]/20 bg-[var(--color-ink)] px-3 text-[11px] font-medium text-[var(--color-paper)]">
+      <span className="relative inline-flex h-6 items-center overflow-hidden rounded-full border border-[var(--color-ink)]/20 bg-[var(--color-ink)] px-3 font-sans text-xs font-medium text-[var(--color-paper)]">
         <motion.span
           key={currentWord}
           initial={{ y: 22, opacity: 0 }}

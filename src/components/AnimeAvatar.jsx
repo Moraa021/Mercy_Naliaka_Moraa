@@ -4,34 +4,34 @@ import { Sparkles, Hand, Zap, Award, Rocket } from "lucide-react";
 const POSES = [
   {
     image: "/assets/anime-pose-1.png",
-    greeting: "Hi there, I'm Mercy!",
+    greeting: "Hi, I'm Mercy Moraa!",
     icon: Hand,
-    text: "Welcome to my portfolio! I build concurrent systems in Go and GraphRAG pipelines.",
-    tag: "Greeting",
+    text: "Software Engineer & Backend Developer building scalable APIs, concurrent Go pipelines, and GraphRAG systems.",
+    tag: "Backend Developer",
     positionClass: "translate-x-0 translate-y-0",
   },
   {
     image: "/assets/anime-pose-2.png",
-    greeting: "Systems-minded & Go obsessed!",
+    greeting: "Go Concurrency & Systems",
     icon: Zap,
-    text: "Deep in goroutines, worker pools, and memory safety at Zone01 Kisumu.",
-    tag: "Apprenticeship",
+    text: "Deep in goroutines, worker pools, memory profiling, and thread safety at Zone01 Kisumu.",
+    tag: "Systems Engineering",
     positionClass: "translate-x-2 sm:translate-x-4 -translate-y-2",
   },
   {
     image: "/assets/anime-pose-3.png",
     greeting: "Kenya AI Challenge Finalist!",
     icon: Award,
-    text: "Grounded DigiCow AI with Neo4j and GraphRAG to eliminate generative hallucinations.",
+    text: "Engineered sub-second bilingual GraphRAG with Neo4j to eliminate generative hallucinations on DigiCow AI.",
     tag: "AI Architecture",
     positionClass: "-translate-x-1 sm:-translate-x-3 translate-y-1",
   },
   {
     image: "/assets/anime-pose-1.png",
-    greeting: "Explore my open-source tools!",
+    greeting: "Production-Grade APIs",
     icon: Rocket,
-    text: "From js-lings to PamojaBuild and Dev.to articles, check out my work below.",
-    tag: "Open Source",
+    text: "Built idempotent Paystack & M-Pesa webhooks with zero double-counting on LedgerMate.",
+    tag: "FinTech & APIs",
     positionClass: "translate-x-1 sm:translate-x-2 -translate-y-1",
   },
 ];
@@ -94,12 +94,12 @@ export default function AnimeAvatar() {
         />
 
         <div className="flex items-center justify-between gap-2 border-b border-[var(--color-line)]/60 pb-1.5 mb-1.5">
-          <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--color-muted)]">
+          <span className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
             <Sparkles size={11} className="text-[var(--color-ink)]" />
             {current.tag}
           </span>
-          <span className="inline-flex items-center gap-1 font-mono text-[9px] uppercase tracking-widest text-[var(--color-muted)] opacity-75">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-ink)] animate-pulse" />
+          <span className="inline-flex items-center gap-1 font-sans text-[11px] font-medium text-[var(--color-muted)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-ink)]" />
           </span>
         </div>
 

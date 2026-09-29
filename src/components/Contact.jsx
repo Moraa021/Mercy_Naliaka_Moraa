@@ -28,7 +28,7 @@ function ContactRow({ icon: Icon, label, value, copyValue, action }) {
       <div className="flex items-center gap-3">
         <Icon className="h-4.5 w-4.5 shrink-0 text-[var(--color-muted)]" />
         <div>
-          <p className="font-mono text-[11px] uppercase tracking-wide text-[var(--color-muted)]">
+          <p className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
             {label}
           </p>
           <p className="text-sm font-medium text-[var(--color-ink)]">{value}</p>
@@ -57,7 +57,7 @@ function ContactRow({ icon: Icon, label, value, copyValue, action }) {
             aria-label={`Copy ${label}`}
             className="flex items-center gap-1.5 rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)]"
           >
-            {copied ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+            {copied ? <Check size={12} className="text-[var(--color-ink)]" /> : <Copy size={12} />}
             {copied ? "Copied" : "Copy"}
           </motion.button>
         )}

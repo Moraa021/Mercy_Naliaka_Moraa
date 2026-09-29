@@ -10,8 +10,7 @@ export function SectionHeading({ kicker, title, accent, desc, className = "" }) 
   return (
     <div className={`mb-12 max-w-2xl ${className}`}>
       {kicker && (
-        <div className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-3 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-muted)] shadow-xs">
-          <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-ink)]" />
+        <div className="mb-3.5 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-3.5 py-1 font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)] shadow-2xs">
           <span>{kicker}</span>
         </div>
       )}

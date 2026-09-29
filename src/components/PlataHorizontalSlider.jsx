@@ -148,7 +148,6 @@ export default function PlataHorizontalSlider() {
           {/* Top Info Bar */}
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-line)] pb-4">
             <div className="flex items-center gap-3">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-muted)]">
                 Plata-Style Kinetic Showcase · Field Impact
               </span>

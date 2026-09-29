@@ -7,7 +7,7 @@ export default function Journey() {
   return (
     <Section id="journey" className="bg-[var(--color-panel)]">
       <SectionHeading
-        kicker="The path"
+        kicker="Background & experience"
         title="Journey"
         accent="so far"
         desc="Practical software engineering experience, systems apprenticeships, and academic grounding."
@@ -18,7 +18,7 @@ export default function Journey() {
           <div key={j.role + j.period} className="relative">
             {/* Timeline Number Node */}
             <span
-              className={`absolute -left-[35px] sm:-left-[51px] top-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 font-mono text-xs font-semibold shadow-sm transition-transform hover:scale-110 ${
+              className={`absolute -left-[35px] sm:-left-[51px] top-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 font-sans text-xs font-bold shadow-sm transition-transform hover:scale-110 ${
                 j.featured
                   ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)]"
                   : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-muted)]"
@@ -36,12 +36,12 @@ export default function Journey() {
                 }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-muted)]">
+                  <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
                     {j.period}
                   </span>
                   {j.badge && (
-                    <span className="inline-flex items-center gap-1 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-ink)]">
-                      {j.featured && <Sparkles size={10} className="text-amber-500" />}
+                    <span className="inline-flex items-center gap-1 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-3 py-1 font-sans text-xs font-medium text-[var(--color-ink)]">
+                      {j.featured && <Sparkles size={11} className="text-amber-500" />}
                       {j.badge}
                     </span>
                   )}
@@ -51,7 +51,7 @@ export default function Journey() {
                   {j.role}
                 </h3>
                 <p className="font-serif italic text-sm text-[var(--color-ink)]/80">
-                  {j.company} &middot; <span className="not-italic font-mono text-xs">{j.location}</span>
+                  {j.company} &middot; <span className="not-italic font-sans text-xs font-medium">{j.location}</span>
                 </p>
 
                 <p className="mt-3 text-sm leading-relaxed text-[var(--color-muted)]">
@@ -63,7 +63,7 @@ export default function Journey() {
                     {j.skills.map((s) => (
                       <span
                         key={s}
-                        className="rounded-md border border-[var(--color-line)] bg-[var(--color-panel)] px-2.5 py-1 font-mono text-[10px] text-[var(--color-muted)]"
+                        className="rounded-md border border-[var(--color-line)] bg-[var(--color-panel)] px-2.5 py-1 font-sans text-xs font-medium text-[var(--color-muted)]"
                       >
                         {s}
                       </span>

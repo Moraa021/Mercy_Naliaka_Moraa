@@ -28,6 +28,7 @@ export default function PlataZoomShowcase() {
   return (
     <section
       ref={containerRef}
+      id="architecture"
       className="relative overflow-hidden py-24 sm:py-32 bg-[var(--color-paper)]"
     >
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8">

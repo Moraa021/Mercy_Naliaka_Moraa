@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowUpRight, BookOpen, Clock, Calendar, ExternalLink } from "lucide-react";
+import { useState, useRef } from "react";
+import { ArrowUpRight, BookOpen, Clock, Calendar, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { articles, profile } from "../data";
 import { Section, SectionHeading } from "./Section";
@@ -7,6 +7,14 @@ import { TiltCard } from "./TiltCard";
 
 export default function Writings() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const scrollRef = useRef(null);
+
+  const scroll = (dir) => {
+    if (scrollRef.current) {
+      const step = dir === "left" ? -scrollRef.current.clientWidth * 0.75 : scrollRef.current.clientWidth * 0.75;
+      scrollRef.current.scrollBy({ left: step, behavior: "smooth" });
+    }
+  };
 
   const articlesList = articles || [];
 
@@ -39,7 +47,7 @@ export default function Writings() {
   const devtoUrl = profile?.socials?.devto || "https://dev.to/memoraa";
 
   return (
-    <Section id="writing" className="bg-[var(--color-panel)]">
+    <Section id="writing" className="bg-[var(--color-panel)] border-b border-[var(--color-line)]">
       <SectionHeading
         kicker="Technical writing on dev.to"
         title="Articles &"
@@ -60,45 +68,71 @@ export default function Writings() {
         }
       />
 
-      {/* Plata-Style Animated Sliding Pill Filter */}
-      <div className="mb-10 flex flex-wrap items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] p-1.5 w-fit">
-        {CATEGORIES.map((c) => {
-          const isActive = selectedCategory === c.key;
-          return (
-            <button
-              key={c.key}
-              type="button"
-              onClick={() => setSelectedCategory(c.key)}
-              className={`relative rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
-                isActive
-                  ? "text-[var(--color-paper)]"
-                  : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
-              }`}
-            >
-              {isActive && (
-                <motion.div
-                  layoutId="writingCategoryPill"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  className="absolute inset-0 rounded-full bg-[var(--color-ink)] shadow-sm"
-                />
-              )}
-              <span className="relative z-10">{c.label}</span>
-            </button>
-          );
-        })}
+      {/* Filter Tabs & Scroll Chevrons */}
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] p-1.5 w-fit">
+          {CATEGORIES.map((c) => {
+            const isActive = selectedCategory === c.key;
+            return (
+              <button
+                key={c.key}
+                type="button"
+                onClick={() => setSelectedCategory(c.key)}
+                className={`relative rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
+                  isActive
+                    ? "text-[var(--color-paper)]"
+                    : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="writingCategoryPill"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 rounded-full bg-[var(--color-ink)] shadow-sm"
+                  />
+                )}
+                <span className="relative z-10">{c.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Scroll Navigation Chevrons */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => scroll("left")}
+            aria-label="Scroll articles left"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-panel)] shadow-2xs"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => scroll("right")}
+            aria-label="Scroll articles right"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-panel)] shadow-2xs"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
 
-      {/* Articles Grid with Plata-Style 3D Tilt */}
-      <motion.div layout className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Horizontally Scrollable Container for Articles */}
+      <div
+        ref={scrollRef}
+        className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar"
+      >
         <AnimatePresence mode="popLayout">
           {filteredArticles.map((a, idx) => (
             <motion.div
               key={a.title}
               layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.4, ease: [0.2, 0.65, 0.3, 0.9], delay: idx * 0.04 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.35, ease: [0.2, 0.65, 0.3, 0.9], delay: idx * 0.04 }}
+              className="w-[82vw] sm:w-[340px] lg:w-[380px] shrink-0 snap-start"
             >
               <TiltCard maxTilt={6} className="h-full">
                 <a
@@ -121,19 +155,19 @@ export default function Writings() {
                     )}
 
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)]">
+                      <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
                         {a.tag}
                       </span>
-                      <div className="flex items-center gap-2 font-mono text-xs text-[var(--color-muted)]">
+                      <div className="flex items-center gap-2.5 font-sans text-xs font-medium text-[var(--color-muted)]">
                         {a.readingTime && (
                           <span className="flex items-center gap-1">
-                            <Clock size={11} />
+                            <Clock size={12} />
                             {a.readingTime}
                           </span>
                         )}
                         {a.date && (
                           <span className="flex items-center gap-1">
-                            <Calendar size={11} />
+                            <Calendar size={12} />
                             {a.date}
                           </span>
                         )}
@@ -155,7 +189,7 @@ export default function Writings() {
                         {a.tags.slice(0, 3).map((t) => (
                           <span
                             key={t}
-                            className="rounded-md border border-[var(--color-line)] bg-[var(--color-panel)] px-2 py-0.5 font-mono text-[10px] text-[var(--color-muted)]"
+                            className="rounded-md border border-[var(--color-line)] bg-[var(--color-panel)] px-2 py-0.5 font-sans text-xs font-medium text-[var(--color-muted)]"
                           >
                             #{t}
                           </span>
@@ -164,7 +198,7 @@ export default function Writings() {
                     )}
 
                     <div className="flex items-center justify-between text-xs font-medium text-[var(--color-ink)]">
-                      <span className="font-mono group-hover:underline">
+                      <span className="font-sans font-semibold group-hover:underline">
                         Read full article on Dev.to
                       </span>
                       <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] transition-colors group-hover:border-[var(--color-ink)] group-hover:bg-[var(--color-ink)] group-hover:text-[var(--color-paper)]">
@@ -177,7 +211,7 @@ export default function Writings() {
             </motion.div>
           ))}
         </AnimatePresence>
-      </motion.div>
+      </div>
 
       {/* Dev.to Author Callout Banner with Spring Button */}
       <div className="mt-10 flex flex-col items-center justify-between gap-6 rounded-[32px] border border-[var(--color-line)] bg-[var(--color-paper)] p-6 sm:flex-row sm:p-8">
