@@ -2,7 +2,7 @@
 
 Personal portfolio website built with **React 19**, **Vite**, and **Tailwind CSS v4**, showcasing projects, technical skills, and systems engineering background.
 
-Live Site: [mercymoraa.com](https://mercymoraa.com) *(or your deployed link)*
+Live Site: [Mercy Moraa](https://mercy-moraa.onrender.com) *(or your deployed link)*
 
 ---
 
