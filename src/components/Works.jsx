@@ -1,19 +1,27 @@
-import { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { useState, useRef } from "react";
+import { ExternalLink, ChevronUp, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { projects } from "../data";
 import { Section, SectionHeading } from "./Section";
 import { TiltCard } from "./TiltCard";
 
 const FILTERS = [
-  { key: "all", label: "All works" },
-  { key: "ai", label: "AI and knowledge graphs" },
-  { key: "fintech", label: "FinTech and backend" },
-  { key: "systems", label: "Systems and CLI" },
+  { key: "all", label: "All Featured Systems" },
+  { key: "ai", label: "AI & GraphRAG" },
+  { key: "fintech", label: "FinTech & APIs" },
+  { key: "systems", label: "Go Systems & CLI" },
 ];
 
 export default function Works() {
   const [active, setActive] = useState("all");
+  const scrollRef = useRef(null);
+
+  const scroll = (dir) => {
+    if (scrollRef.current) {
+      const step = dir === "up" ? -420 : 420;
+      scrollRef.current.scrollBy({ top: step, behavior: "smooth" });
+    }
+  };
 
   // Normalize project entries and map Go Concurrency project title -> "Pamoja Build"
   const processedProjects = (projects || []).map((p) => {
@@ -38,176 +46,216 @@ export default function Works() {
       : processedProjects.filter((p) => p.category === active);
 
   return (
-    <Section id="works">
+    <Section id="works" className="border-b border-[var(--color-line)]">
       <SectionHeading
-        kicker="Selected works"
-        title="Case studies,"
-        accent="composed"
-        desc="Every system, a cohesive solution: production architectures built with purpose and technical rigor."
+        kicker="Featured Case Studies"
+        title="Production Systems &"
+        accent="Backend Architectures"
+        desc="Deep architectural dives into deployed services: high-throughput Go pipelines, Paystack/M-Pesa idempotent APIs, and zero-hallucination GraphRAG."
       />
 
-      {/* Plata-Style Animated Sliding Pill Filter Bar */}
-      <div className="mb-12 flex flex-wrap items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] p-1.5 w-fit">
-        {FILTERS.map((f) => {
-          const isActive = active === f.key;
-          return (
-            <button
-              key={f.key}
-              type="button"
-              onClick={() => setActive(f.key)}
-              className={`relative rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
-                isActive
-                  ? "text-[var(--color-paper)]"
-                  : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
-              }`}
-            >
-              {isActive && (
-                <motion.div
-                  layoutId="worksActiveFilterPill"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  className="absolute inset-0 rounded-full bg-[var(--color-ink)] shadow-sm"
-                />
-              )}
-              <span className="relative z-10">{f.label}</span>
-            </button>
-          );
-        })}
+      {/* Filter Bar with Vertical Scroll Navigation Controls */}
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] p-1.5 w-fit">
+          {FILTERS.map((f) => {
+            const isActive = active === f.key;
+            return (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() => setActive(f.key)}
+                className={`relative rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
+                  isActive
+                    ? "text-[var(--color-paper)]"
+                    : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="worksActiveFilterPill"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 rounded-full bg-[var(--color-ink)] shadow-sm"
+                  />
+                )}
+                <span className="relative z-10">{f.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Scroll Navigation Chevrons for Up/Down */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => scroll("up")}
+            aria-label="Scroll projects up"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-paper)] shadow-2xs cursor-pointer"
+          >
+            <ChevronUp size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => scroll("down")}
+            aria-label="Scroll projects down"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-paper)] shadow-2xs cursor-pointer"
+          >
+            <ChevronDown size={16} />
+          </button>
+        </div>
       </div>
 
-      {/* Project Cards Stream with Plata-Style 3D Tilt */}
-      <div className="flex flex-col gap-10">
-        <AnimatePresence mode="popLayout">
-          {visible.map((p, idx) => (
-            <motion.div
-              key={p.id || p.title}
-              layout
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.45, ease: [0.2, 0.65, 0.3, 0.9], delay: idx * 0.05 }}
-            >
-              <TiltCard maxTilt={5}>
-                <article className="grid gap-8 rounded-[32px] sm:rounded-[36px] border border-[var(--color-line)] bg-[var(--color-panel)] p-6 sm:p-9 lg:grid-cols-2 lg:items-center lg:gap-12 shadow-[0_20px_50px_-25px_rgba(20,20,19,0.08)] transition-all hover:border-[var(--color-ink)]/50">
-                  <div>
-                    {/* Type and Tags Badges */}
-                    <div className="mb-4 flex flex-wrap gap-2">
-                      {p.type && (
-                        <span className="rounded-full bg-[var(--color-paper)] px-3 py-1 font-mono text-[11px] text-[var(--color-muted)] border border-[var(--color-line)]/60">
-                          {p.type}
-                        </span>
-                      )}
-                      {p.tags?.slice(0, 2).map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-full bg-[var(--color-paper)] px-3 py-1 font-mono text-[11px] text-[var(--color-muted)] border border-[var(--color-line)]/60"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
+      {/* 2x2 Vertically Scrollable Grid for Case Studies */}
+      <div
+        ref={scrollRef}
+        className="custom-scrollbar max-h-[840px] overflow-y-auto pr-2 pb-4 scroll-smooth focus:outline-none"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+          <AnimatePresence mode="popLayout">
+            {visible.map((p, idx) => (
+              <motion.div
+                key={p.id || p.title}
+                layout
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.35, ease: [0.2, 0.65, 0.3, 0.9], delay: idx * 0.04 }}
+                className="h-full"
+              >
+                <TiltCard maxTilt={3} className="h-full">
+                  <article className="flex h-full flex-col justify-between rounded-[24px] sm:rounded-[28px] border border-[var(--color-line)] bg-[var(--color-panel)] p-5 sm:p-6 shadow-sm transition-all duration-300 hover:border-[var(--color-ink)]/50 hover:shadow-md">
+                    <div>
+                      {/* Compact Top Media / Stat Feature */}
+                      {p.image ? (
+                        <div className="overflow-hidden rounded-xl border border-[var(--color-line)]/70 bg-black/5 aspect-[21/9] sm:aspect-[2.3/1] mb-4">
+                          <img
+                            src={p.image}
+                            alt={p.imageAlt || p.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                          />
+                        </div>
+                      ) : p.stat ? (
+                        <div className="overflow-hidden rounded-xl border border-[var(--color-line)]/70 bg-[var(--color-paper)] p-3.5 mb-4 flex items-center justify-between">
+                          <div>
+                            <span className="font-sans text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]">
+                              Go Concurrency Engine
+                            </span>
+                            <p className="font-display text-sm font-medium text-[var(--color-ink)]">
+                              Zero Third-Party Dependencies
+                            </p>
+                          </div>
+                          <div className="rounded-lg bg-[var(--color-panel)] border border-[var(--color-line)] px-3 py-1.5 text-right">
+                            <span className="font-display text-xl font-bold text-[var(--color-ink)] leading-none">
+                              {p.stat.value}
+                            </span>
+                            <p className="font-sans text-[11px] text-[var(--color-muted)] mt-0.5">
+                              {p.stat.label}
+                            </p>
+                          </div>
+                        </div>
+                      ) : null}
 
-                    <h3 className="font-display text-2xl font-normal tracking-tight text-[var(--color-ink)] sm:text-3xl">
-                      {p.title}
-                    </h3>
-                    {p.subtitle && (
-                      <p className="mt-1.5 font-serif text-sm italic text-[var(--color-muted)] sm:text-base">
-                        {p.subtitle}
-                      </p>
-                    )}
-                    <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted)]">
-                      {p.description}
-                    </p>
-
-                    {/* Bullet Highlights */}
-                    {p.bullets && p.bullets.length > 0 && (
-                      <ul className="mt-5 flex flex-col gap-3">
-                        {p.bullets.map((b) => (
-                          <li key={b.label} className="text-sm leading-relaxed">
-                            <strong className="font-medium text-[var(--color-ink)]">
-                              {b.label}:
-                            </strong>{" "}
-                            <span className="text-[var(--color-muted)]">{b.text}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {/* Tech Stack Chips */}
-                    {p.tech && p.tech.length > 0 && (
-                      <div className="mt-6 flex flex-wrap gap-2">
-                        {p.tech.map((t) => (
+                      {/* Badges */}
+                      <div className="mb-2.5 flex flex-wrap items-center gap-1.5">
+                        {p.type && (
+                          <span className="rounded-full bg-[var(--color-paper)] px-2.5 py-0.5 font-sans text-xs font-medium text-[var(--color-muted)] border border-[var(--color-line)]/60">
+                            {p.type}
+                          </span>
+                        )}
+                        {p.tags?.slice(0, 2).map((t) => (
                           <span
                             key={t}
-                            className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1 font-mono text-[11px] text-[var(--color-muted)]"
+                            className="rounded-full bg-[var(--color-paper)] px-2.5 py-0.5 font-sans text-xs font-medium text-[var(--color-muted)] border border-[var(--color-line)]/60"
                           >
                             {t}
                           </span>
                         ))}
                       </div>
-                    )}
 
-                    {/* Action Link CTAs with Spring Physics */}
-                    <div className="mt-8 flex flex-wrap gap-3">
-                      {p.liveUrl && (
-                        <motion.a
-                          href={p.liveUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          whileHover={{ scale: 1.03 }}
-                          whileTap={{ scale: 0.97 }}
-                          className="flex items-center gap-1.5 rounded-full bg-[var(--color-ink)] px-5 py-2.5 text-xs sm:text-sm font-medium text-[var(--color-paper)] shadow-sm"
-                        >
-                          <span>{p.liveLabel || "Open live app"}</span>
-                          <ExternalLink size={13} />
-                        </motion.a>
-                      )}
-                      {p.repoUrl && (
-                        <motion.a
-                          href={p.repoUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          whileHover={{ scale: 1.03 }}
-                          whileTap={{ scale: 0.97 }}
-                          className="flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-panel)] px-5 py-2.5 text-xs sm:text-sm font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)]"
-                        >
-                          <span>{p.repoLabel || "View repository"}</span>
-                          <ExternalLink size={13} />
-                        </motion.a>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Media / Stat Feature Column */}
-                  {p.image ? (
-                    <div className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-panel)]">
-                      <img
-                        src={p.image}
-                        alt={p.imageAlt || p.title}
-                        loading="lazy"
-                        className="w-full object-cover transition-transform duration-700 hover:scale-[1.04]"
-                      />
-                    </div>
-                  ) : p.stat ? (
-                    <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-7 sm:p-9 shadow-inner">
-                      <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)]">
-                        Systems focus
-                      </p>
-                      <p className="mt-2 font-display text-xl sm:text-2xl font-normal text-[var(--color-ink)]">
-                        Go standard library
-                      </p>
-                      <div className="mt-6 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-6">
-                        <p className="font-display text-4xl sm:text-5xl font-light text-[var(--color-ink)]">
-                          {p.stat.value}
+                      {/* Title & Subtitle */}
+                      <h3 className="font-display text-lg sm:text-xl font-medium tracking-tight text-[var(--color-ink)]">
+                        {p.title}
+                      </h3>
+                      {p.subtitle && (
+                        <p className="mt-0.5 font-serif text-xs italic text-[var(--color-muted)] line-clamp-1">
+                          {p.subtitle}
                         </p>
-                        <p className="mt-2 text-sm text-[var(--color-muted)]">{p.stat.label}</p>
+                      )}
+
+                      {/* Description */}
+                      <p className="mt-2 text-xs sm:text-[13px] leading-relaxed text-[var(--color-muted)] line-clamp-2">
+                        {p.description}
+                      </p>
+
+                      {/* Compact Bullets */}
+                      {p.bullets && p.bullets.length > 0 && (
+                        <div className="mt-3 space-y-1.5 border-t border-[var(--color-line)]/50 pt-2.5">
+                          {p.bullets.slice(0, 2).map((b) => (
+                            <p key={b.label} className="text-[11px] sm:text-xs leading-relaxed text-[var(--color-muted)] line-clamp-1">
+                              <strong className="font-medium text-[var(--color-ink)]">{b.label}:</strong> {b.text}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Card Footer: Tech Chips & Actions */}
+                    <div className="mt-4 pt-3 border-t border-[var(--color-line)]/50">
+                      {/* Tech Chips */}
+                      {p.tech && p.tech.length > 0 && (
+                        <div className="mb-3 flex flex-wrap items-center gap-1.5">
+                          {p.tech.slice(0, 4).map((t) => (
+                            <span
+                              key={t}
+                              className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-0.5 font-sans text-xs font-medium text-[var(--color-muted)]"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                          {p.tech.length > 4 && (
+                            <span className="font-sans text-xs font-medium text-[var(--color-muted)]">
+                              +{p.tech.length - 4}
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Action CTAs */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {p.liveUrl && (
+                          <motion.a
+                            href={p.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-ink)] px-3.5 py-1.5 font-sans text-xs font-medium text-[var(--color-paper)] shadow-2xs"
+                          >
+                            <span>{p.liveLabel || "Live Demo"}</span>
+                            <ExternalLink size={12} />
+                          </motion.a>
+                        )}
+                        {p.repoUrl && (
+                          <motion.a
+                            href={p.repoUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-1.5 font-sans text-xs font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-ink)]"
+                          >
+                            <span>{p.repoLabel || "Repository"}</span>
+                            <ExternalLink size={12} />
+                          </motion.a>
+                        )}
                       </div>
                     </div>
-                  ) : null}
-                </article>
-              </TiltCard>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+                  </article>
+                </TiltCard>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
       </div>
     </Section>
   );
