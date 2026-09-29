@@ -4,14 +4,13 @@ import { motion } from "motion/react";
 import { profile } from "../data";
 
 const LINKS = [
-  { href: "#about", id: "about", label: "About" },
-  { href: "#impact-slider", id: "impact-slider", label: "Impact" },
-  { href: "#journey", id: "journey", label: "Journey" },
+  { href: "#skills", id: "skills", label: "Stack" },
+  { href: "#leadership", id: "leadership", label: "Leadership" },
   { href: "#works", id: "works", label: "Works" },
+  { href: "#journey", id: "journey", label: "Journey" },
   { href: "#opensource", id: "opensource", label: "Open Source" },
-  { href: "#moments", id: "moments", label: "Moments" },
-  { href: "#skills", id: "skills", label: "Skills" },
   { href: "#writing", id: "writing", label: "Writing" },
+  { href: "#moments", id: "moments", label: "Milestones" },
   { href: "#contact", id: "contact", label: "Contact" },
 ];
 
@@ -56,9 +55,6 @@ export default function Navbar() {
     };
   }, [open]);
 
-  // Derive initial avatar letter from shortName or full name
-  const avatarLetter = (profile.shortName || profile.name || "M").charAt(0).toUpperCase();
-
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
@@ -68,7 +64,7 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between px-5 sm:px-8">
-        {/* Brand Logo & Pulsating Status Dot */}
+        {/* Brand Logo with Mercy's Photo */}
         <motion.a
           href="#hero"
           onClick={() => setActiveSection("hero")}
@@ -76,21 +72,20 @@ export default function Navbar() {
           whileTap={{ scale: 0.97 }}
           className="flex shrink-0 items-center gap-2.5 group"
         >
-          <div className="relative">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink)] font-display text-sm font-semibold text-[var(--color-paper)] shadow-xs transition-transform group-hover:rotate-6">
-              {avatarLetter}
-            </span>
-            <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-[var(--color-paper)]">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            </span>
+          <div className="relative overflow-hidden h-9 w-9 rounded-full border border-[var(--color-line)] shadow-xs shrink-0">
+            <img
+              src="/assets/hero-cover.jpg"
+              alt={profile.shortName || profile.name}
+              className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
+            />
           </div>
 
           <div className="flex flex-col">
             <span className="font-display text-sm sm:text-base font-semibold tracking-tight text-[var(--color-ink)]">
               {profile.shortName || profile.name}
             </span>
-            <span className="hidden sm:inline-block font-mono text-[10px] uppercase tracking-wider text-[var(--color-muted)]">
-              Systems Engineer
+            <span className="hidden sm:inline-block font-sans text-[11px] font-medium text-[var(--color-muted)]">
+              Software & Backend Dev
             </span>
           </div>
         </motion.a>
@@ -104,7 +99,7 @@ export default function Navbar() {
                 <a
                   href={l.href}
                   onClick={() => setActiveSection(l.id)}
-                  className={`relative block rounded-full px-3.5 py-1.5 font-mono text-[12px] font-medium tracking-tight transition-colors ${
+                  className={`relative block rounded-full px-3.5 py-1.5 font-sans text-[13px] font-medium transition-colors ${
                     isActive
                       ? "text-[var(--color-paper)] font-semibold"
                       : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
@@ -189,7 +184,7 @@ export default function Navbar() {
                       setActiveSection(l.id);
                       setOpen(false);
                     }}
-                    className={`block rounded-xl px-3 py-2.5 font-mono text-sm transition-colors ${
+                    className={`block rounded-xl px-3 py-2.5 font-sans text-sm font-medium transition-colors ${
                       isActive
                         ? "bg-[var(--color-ink)] text-[var(--color-paper)] font-semibold"
                         : "text-[var(--color-ink)] hover:bg-[var(--color-panel)]"
